@@ -1,31 +1,22 @@
 package com.hexaware.cricketmanagement.restcontroller;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
 import com.hexaware.cricketmanagement.dto.PlayerDTO;
 import com.hexaware.cricketmanagement.entities.Player;
 import com.hexaware.cricketmanagement.service.IPlayerService;
-
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/players")
 public class PlayerRestController {
 
-    @Autowired
-    private IPlayerService playerService;
+    private final IPlayerService playerService;
 
-    @PostMapping(consumes = "application/json", produces = "application/json")
-    public Player addPlayer(@Valid @RequestBody PlayerDTO playerDTO) {
-        return playerService.addPlayer(playerDTO);
-    }
-
-    @GetMapping("/{playerId}")
-    public PlayerDTO getPlayerById(@PathVariable Long playerId) {
-        return playerService.getPlayerById(playerId);
+    public PlayerRestController(IPlayerService playerService) {
+        this.playerService = playerService;
     }
 
     @GetMapping
@@ -33,13 +24,25 @@ public class PlayerRestController {
         return playerService.getAllPlayers();
     }
 
-    @PutMapping(value = "/{playerId}", consumes = "application/json")
-    public Player updatePlayer(@PathVariable Long playerId, @Valid @RequestBody PlayerDTO playerDTO) {
-        return playerService.updatePlayer(playerId, playerDTO);
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Player createPlayer(@Valid @RequestBody PlayerDTO dto) {
+        return playerService.createPlayer(dto);
     }
 
-    @DeleteMapping("/{playerId}")
-    public String deletePlayer(@PathVariable Long playerId) {
-        return playerService.deletePlayer(playerId);
+    @GetMapping("/{id}")
+    public Player getPlayer(@PathVariable int id) {
+        return playerService.getPlayerById(id);
+    }
+
+    @PutMapping("/{id}")
+    public Player updatePlayer(@PathVariable int id, @Valid @RequestBody PlayerDTO dto) {
+        return playerService.updatePlayer(id, dto);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletePlayer(@PathVariable int id) {
+        playerService.deletePlayer(id);
     }
 }

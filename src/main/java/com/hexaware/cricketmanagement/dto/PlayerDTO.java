@@ -1,23 +1,28 @@
 package com.hexaware.cricketmanagement.dto;
 
+import jakarta.validation.constraints.*;
+
 public class PlayerDTO {
-    private int playerId;
+
+    @NotBlank(message = "Player name is required")
     private String playerName;
+
+    @Min(value = 1, message = "Jersey number must be greater than 0")
     private int jerseyNumber;
+
+    @NotBlank(message = "Role is required")
     private String role;
+
+    @Min(value = 0, message = "Total matches cannot be negative")
     private int totalMatches;
+
+    @NotBlank(message = "Team name is required")
     private String teamName;
+
+    @NotBlank(message = "Country/State name is required")
     private String countryOrStateName;
+
     private String description;
-
-    // Getters and setters
-    public int getPlayerId() {
-        return playerId;
-    }
-
-    public void setPlayerId(int playerId) {
-        this.playerId = playerId;
-    }
 
     public String getPlayerName() {
         return playerName;

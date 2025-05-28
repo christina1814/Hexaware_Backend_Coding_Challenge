@@ -1,65 +1,59 @@
 package com.hexaware.cricketmanagement.service;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.hexaware.cricketmanagement.dto.PlayerDTO;
 import com.hexaware.cricketmanagement.entities.Player;
-import com.hexaware.cricketmanagement.exception.ResourceNotFoundException;
+import com.hexaware.cricketmanagement.exception.PlayerNotFoundException;
 import com.hexaware.cricketmanagement.repository.PlayerRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class PlayerServiceImpl implements IPlayerService {
 
-    @Autowired
-    private PlayerRepository playerRepository;
+    private final PlayerRepository repository;
 
-    @Override
-    public Player addPlayer(PlayerDTO playerDTO) {
-        Player player = new Player();
-
-        player.setPlayerId(playerDTO.getPlayerId());
-        player.setPlayerName(playerDTO.getPlayerName());
-        player.setJerseyNumber(playerDTO.getJerseyNumber());
-        player.setRole(playerDTO.getRole());
-        player.setTotalMatches(playerDTO.getTotalMatches());
-        player.setTeamName(playerDTO.getTeamName());
-        player.setCountryOrStateName(playerDTO.getCountryOrStateName());
-        player.setDescription(playerDTO.getDescription());
-
-        return playerRepository.save(player);
-    }
-
-    @Override
-    public PlayerDTO getPlayerById(int playerId) {
-        Player player = playerRepository.findById(playerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Player not found with ID: " + playerId));
-
-        PlayerDTO dto = new PlayerDTO();
-        dto.setPlayerId(player.getPlayerId());
-        dto.setPlayerName(player.getPlayerName());
-        dto.setJerseyNumber(player.getJerseyNumber());
-        dto.setRole(player.getRole());
-        dto.setTotalMatches(player.getTotalMatches());
-        dto.setTeamName(player.getTeamName());
-        dto.setCountryOrStateName(player.getCountryOrStateName());
-        dto.setDescription(player.getDescription());
-
-        return dto;
+    public PlayerServiceImpl(PlayerRepository repository) {
+        this.repository = repository;
     }
 
     @Override
     public List<Player> getAllPlayers() {
-        return playerRepository.findAll();
+        return repository.findAll();
     }
 
     @Override
-    public Player updatePlayer(int playerId, PlayerDTO dto) {
-        Player player = playerRepository.findById(playerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Player not found with ID: " + playerId));
+    public Player getPlayerById(int id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new PlayerNotFoundException("Player not found with ID: " + id));
+    }
 
+    @Override
+    public Player createPlayer(PlayerDTO dto) {
+        if (repository.existsByJerseyNumber(dto.getJerseyNumber())) {
+            throw new IllegalArgumentException("Jersey number already in use");
+        }
+        Player player = new Player();
+        copyDtoToEntity(dto, player);
+        return repository.save(player);
+    }
+
+    @Override
+    public Player updatePlayer(int id, PlayerDTO dto) {
+        Player player = getPlayerById(id);
+        copyDtoToEntity(dto, player);
+        return repository.save(player);
+    }
+
+    @Override
+    public void deletePlayer(int id) {
+        if (!repository.existsById(id)) {
+            throw new PlayerNotFoundException("Player not found with ID: " + id);
+        }
+        repository.deleteById(id);
+    }
+
+    private void copyDtoToEntity(PlayerDTO dto, Player player) {
         player.setPlayerName(dto.getPlayerName());
         player.setJerseyNumber(dto.getJerseyNumber());
         player.setRole(dto.getRole());
@@ -67,16 +61,5 @@ public class PlayerServiceImpl implements IPlayerService {
         player.setTeamName(dto.getTeamName());
         player.setCountryOrStateName(dto.getCountryOrStateName());
         player.setDescription(dto.getDescription());
-
-        return playerRepository.save(player);
-    }
-
-    @Override
-    public String deletePlayer(int playerId) {
-        if (!playerRepository.existsById(playerId)) {
-            throw new ResourceNotFoundException("Player not found with ID: " + playerId);
-        }
-        playerRepository.deleteById(playerId);
-        return "Player deleted successfully with ID: " + playerId;
     }
 }

@@ -1,15 +1,13 @@
 package com.hexaware.cricketmanagement.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Player_Table")
 public class Player {
 
     @Id
-    private int playerId;  // int type consistent
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int playerId;
 
     private String playerName;
     private int jerseyNumber;
@@ -19,7 +17,6 @@ public class Player {
     private String countryOrStateName;
     private String description;
 
-    // Getters and Setters
     public int getPlayerId() {
         return playerId;
     }
