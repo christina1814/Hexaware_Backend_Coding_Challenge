@@ -1,5 +1,7 @@
 package com.hexaware.cricketmanagement.dto;
 
+import com.hexaware.cricketmanagement.entities.PlayerRole;
+
 import jakarta.validation.constraints.*;
 
 public class PlayerDTO {
@@ -10,8 +12,8 @@ public class PlayerDTO {
     @Min(value = 1, message = "Jersey number must be greater than 0")
     private int jerseyNumber;
 
-    @NotBlank(message = "Role is required")
-    private String role;
+    @NotNull(message = "Role is required")
+    private PlayerRole role;
 
     @Min(value = 0, message = "Total matches cannot be negative")
     private int totalMatches;
@@ -40,11 +42,11 @@ public class PlayerDTO {
         this.jerseyNumber = jerseyNumber;
     }
 
-    public String getRole() {
+    public PlayerRole getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(PlayerRole role) {
         this.role = role;
     }
 

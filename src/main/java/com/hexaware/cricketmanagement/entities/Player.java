@@ -11,7 +11,8 @@ public class Player {
 
     private String playerName;
     private int jerseyNumber;
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private PlayerRole role;
     private int totalMatches;
     private String teamName;
     private String countryOrStateName;
@@ -41,11 +42,11 @@ public class Player {
         this.jerseyNumber = jerseyNumber;
     }
 
-    public String getRole() {
+    public PlayerRole getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(PlayerRole role) {
         this.role = role;
     }
 
