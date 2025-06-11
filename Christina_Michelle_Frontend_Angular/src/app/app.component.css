@@ -1,0 +1,10 @@
+a.active {
+  font-weight: bold;
+  color: darkblue;
+}
+
+.box-style {
+  border: 2px solid black;
+  padding: 10px 10px 40px 10px;
+  min-height: 80vh;
+}

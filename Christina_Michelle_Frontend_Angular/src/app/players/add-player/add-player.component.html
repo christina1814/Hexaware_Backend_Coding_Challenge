@@ -1,0 +1,29 @@
+<h3>Add New Player</h3>
+
+<form #myform="ngForm" (ngSubmit)="savePlayer(myform.value)">
+
+  <label>Player Name</label><br>
+  <input type="text" name="playerName" ngModel required><br><br>
+
+  <label>Jersey Number</label><br>
+  <input type="number" name="jerseyNumber" ngModel required><br><br>
+
+  <label>Role</label><br>
+  <select name="role" ngModel required>
+    <option *ngFor="let r of roles" [value]="r">{{ r }}</option>
+  </select><br><br>
+
+  <label>Total Matches</label><br>
+  <input type="number" name="totalMatches" ngModel required><br><br>
+
+  <label>Team Name</label><br>
+  <input type="text" name="teamName" ngModel required><br><br>
+
+  <label>Country/State Name</label><br>
+  <input type="text" name="countryOrStateName" ngModel required><br><br>
+
+  <label>Description</label><br>
+  <textarea name="description" ngModel required></textarea><br><br>
+
+  <button type="submit" [disabled]="myform.invalid">Save Player</button>
+</form>
