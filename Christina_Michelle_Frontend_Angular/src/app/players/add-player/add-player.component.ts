@@ -1,5 +1,3 @@
-// src/app/components/add-player/add-player.component.ts
-
 import { Component } from '@angular/core';
 import { Player, PlayerRole } from 'src/app/player.model';
 import { PlayerService } from 'src/app/services/player.service';

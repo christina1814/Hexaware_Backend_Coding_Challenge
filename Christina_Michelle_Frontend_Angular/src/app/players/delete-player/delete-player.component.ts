@@ -17,9 +17,10 @@ export class DeletePlayerComponent {
       return;
     }
 
-   this.service.deletePlayer(this.playerId).subscribe(
+   this.service.deletePlayer(this.playerId)
+   .subscribe(
     () => {alert(`Player with ID ${this.playerId} deleted successfully!`);},
-    
+
     () => {
       alert(`Player with ID ${this.playerId} not found`);
     });
