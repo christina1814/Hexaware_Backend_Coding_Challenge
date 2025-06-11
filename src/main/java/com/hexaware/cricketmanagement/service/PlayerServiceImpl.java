@@ -9,28 +9,34 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class PlayerServiceImpl implements IPlayerService {
+public class PlayerServiceImpl implements IPlayerService
+{
 
     private final PlayerRepository repository;
 
-    public PlayerServiceImpl(PlayerRepository repository) {
+    public PlayerServiceImpl(PlayerRepository repository) 
+    {
         this.repository = repository;
     }
 
     @Override
-    public List<Player> getAllPlayers() {
+    public List<Player> getAllPlayers() 
+    {
         return repository.findAll();
     }
 
     @Override
-    public Player getPlayerById(int id) {
+    public Player getPlayerById(int id) 
+    {
         return repository.findById(id)
                 .orElseThrow(() -> new PlayerNotFoundException("Player not found with ID: " + id));
     }
 
     @Override
-    public Player createPlayer(PlayerDTO dto) {
-        if (repository.existsByJerseyNumber(dto.getJerseyNumber())) {
+    public Player createPlayer(PlayerDTO dto) 
+    {
+        if (repository.existsByJerseyNumber(dto.getJerseyNumber())) 
+        {
             throw new IllegalArgumentException("Jersey number already in use");
         }
         Player player = new Player();
@@ -39,21 +45,25 @@ public class PlayerServiceImpl implements IPlayerService {
     }
 
     @Override
-    public Player updatePlayer(int id, PlayerDTO dto) {
+    public Player updatePlayer(int id, PlayerDTO dto) 
+    {
         Player player = getPlayerById(id);
         copyDtoToEntity(dto, player);
         return repository.save(player);
     }
 
     @Override
-    public void deletePlayer(int id) {
-        if (!repository.existsById(id)) {
+    public void deletePlayer(int id) 
+    {
+        if (!repository.existsById(id)) 
+        {
             throw new PlayerNotFoundException("Player not found with ID: " + id);
         }
         repository.deleteById(id);
     }
 
-    private void copyDtoToEntity(PlayerDTO dto, Player player) {
+    private void copyDtoToEntity(PlayerDTO dto, Player player) 
+    {
         player.setPlayerName(dto.getPlayerName());
         player.setJerseyNumber(dto.getJerseyNumber());
         player.setRole(dto.getRole());

@@ -18,6 +18,8 @@ public class Player {
     private String countryOrStateName;
     private String description;
 
+    // Getters and Setters
+    
     public int getPlayerId() {
         return playerId;
     }

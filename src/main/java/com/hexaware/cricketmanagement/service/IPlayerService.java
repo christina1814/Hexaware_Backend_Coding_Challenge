@@ -5,7 +5,8 @@ import com.hexaware.cricketmanagement.entities.Player;
 
 import java.util.List;
 
-public interface IPlayerService {
+public interface IPlayerService 
+{
     List<Player> getAllPlayers();
     Player getPlayerById(int id);
     Player createPlayer(PlayerDTO dto);
